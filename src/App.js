@@ -1,25 +1,25 @@
-import logo from './logo.svg';
+import { useEffect } from 'react';
+import { useThemeContext } from './provider/ThemeModeProvider';
 import './App.css';
 
-function App() {
+const App = () => {
+  const { dark, light, darkMode, setDarkMode } = useThemeContext();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className='App'
+      style={
+        darkMode
+          ? { color: light, backgroundColor: dark }
+          : { color: dark, backgroundColor: light }
+      }
+    >
+      <div className='main'>
+        <h1>PORTFOLIO</h1>
+        <p>This is my new portfolio</p>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
