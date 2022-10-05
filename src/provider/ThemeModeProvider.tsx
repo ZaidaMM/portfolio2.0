@@ -1,8 +1,16 @@
-import { useState, useContext, useEffect } from 'react';
+import { ReactNode, useState, useContext, useEffect } from 'react';
 import { ThemeModeContext } from './ThemeModeContext';
 
-const ThemeModeProvider = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(true);
+function useThemeContext() {
+  const context = useContext(ThemeModeContext);
+  if (context === undefined) {
+    throw console.error('Theme must be withtin a Provider');
+  }
+  return context;
+}
+
+const ThemeModeProvider = (props: { children: ReactNode }) => {
+  const [darkMode, setDarkMode] = useState<boolean>(true);
 
   const handleToggleTheme = () => {
     setDarkMode(!darkMode);
@@ -16,7 +24,7 @@ const ThemeModeProvider = ({ children }) => {
   }, [darkMode]);
 
   useEffect(() => {
-    const darkMode = JSON.parse(localStorage.getItem('darkMode'));
+    const darkMode = JSON.parse(localStorage.getItem('darkMode') || '');
     if (darkMode) {
       setDarkMode(darkMode);
     }
@@ -33,13 +41,9 @@ const ThemeModeProvider = ({ children }) => {
         handleToggleTheme,
       }}
     >
-      {children}
+      {props.children}
     </ThemeModeContext.Provider>
   );
 };
-
-function useThemeContext() {
-  return useContext(ThemeModeContext);
-}
 
 export { ThemeModeProvider, useThemeContext };
